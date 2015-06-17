@@ -9,7 +9,7 @@
 	</div>
 	<div class="col-md-6">
 		<h4 class="page-header colorize"> Create a new chat room </h4>
-		<form method="POST" action="{% url 'new_room' %}">
+		<form method="POST" action="{% url 'home' %}">
 			{{ form.title }}
 			{% csrf_token %}
 			{% if form.errors %}
