@@ -2,7 +2,7 @@ from django import forms
 from chat.models import Room
 
 
-EMPTY_TITLE_ERROR = "You can't create a room with empty title"
+EMPTY_TITLE_ERROR = "You can't create a room with blank title"
 
 class NewRoomForm(forms.models.ModelForm):
 

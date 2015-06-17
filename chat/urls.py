@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
 
 urlpatterns = [
-	url(r'^$', 'chat.views.room', name='room'),
+	url(r'^(\d+)/$', 'chat.views.room_page', name='room'),
 ]

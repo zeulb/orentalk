@@ -1,5 +1,7 @@
 from django.test import TestCase
 from chat.models import Room
+from chat.views import room_page
+from django.http import HttpRequest
 
 class HomePageTest(TestCase):
 
@@ -35,3 +37,14 @@ class HomePageTest(TestCase):
 		)
 
 		self.assertEqual(Room.objects.count(), 0)
+
+
+	def test_room_page_return_correct_content(self):
+		self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+
+		request = HttpRequest()
+		html = room_page(request, 1)
+		self.assertContains(html, 'Budi anduk')

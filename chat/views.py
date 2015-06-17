@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 from chat.forms import NewRoomForm
+from chat.models import Room
 
 def home_page(request):
 	if request.POST:
-		room = NewRoomForm(data=request.POST)
-		if room.is_valid():
-			room.save()
-			return redirect('/')
-		return render(request, 'home.html', {'form': room, })
+		form = NewRoomForm(data=request.POST)
+		if form.is_valid():
+			_room = form.save()
+			return redirect(_room)
+		return render(request, 'home.html', {'form': form, })
 	else:
 		return render(request, 'home.html', {'form': NewRoomForm(), })
 
-def room(request):
-	pass
+def room_page(request, room_id):
+	room = Room.objects.get(id=room_id)
+	return render(request, 'room.html', {'title': room.title, })
