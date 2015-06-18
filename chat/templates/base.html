@@ -6,38 +6,38 @@
 		<link href="/static/base.css" rel="stylesheet" media="screen">
 	</head>
 	<body>
-		<div class="container col-md-1">
-		</div>
-		<div class="container col-md-10">
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<a class="navbar-brand">OrenTalk</a>
-					<ul class="nav navbar-nav">
-						<li class="active"><a href={% url 'home' %}>Home</a></li>
-					</ul>
-					<p class="navbar-text navbar-right"><span id="page-title">{% block page_title %}{% endblock %}</span> |
-					{% if user.username %}
-					Signed in as {{ user.username }} | <a href="{% url 'logout' %}">Logout</a>
-					{% else %}
-					Signed in as Guest | <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a> 
-					{% endif %}
-					</p>
-					
-				</div>
-				
-			</nav>
 
-			<div class="jumbotron jumbrotron-color">
-				<div class="container">
-					<div class="row">
+		<div class="container">
+			<div class="row">
+				<div class="container col-md-1"></div>
+				<div class="container col-md-10">
+				<nav class="navbar navbar-default">
+					<div class="container">
+						<a class="navbar-brand">OrenTalk</a>
+						<ul class="nav navbar-nav">
+							<li class="active"><a href={% url 'home' %}>Home</a></li>
+						</ul>
+						<p class="navbar-text navbar-right"><span id="page-title">{% block page_title %}{% endblock %}</span> |
+						{% if user.username %}
+						Signed in as {{ user.username }} | <a href="{% url 'logout' %}">Logout</a>
+						{% else %}
+						Signed in as Guest | <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a> 
+						{% endif %}
+						</p>
+						
 					</div>
 					
-					<div class="row">
-						{% block content %}{% endblock %}
-					</div>
+				</nav>
 				</div>
+				<div class="container col-md-1"></div>
 			</div>
-
+			<div class="row">
+				<div class="container col-md-1"></div>
+				<div class="container col-md-10">
+					{% block content %}{% endblock %}
+				</div>
+				<div class="container col-md-1"></div>
+			</div>
 		</div>
 		<script src="http://code.jquery.com/jquery.min.js"></script>
 		{% block additional_script %}{% endblock %}

@@ -4,7 +4,8 @@
 
 
 {% block content %}
-
+<div class="jumbotron jumbrotron-color">
+<div class="row">
 	<table class='table table-fixed'>
 		<tbody>
 		{% for message in room.message_set.all %}
@@ -27,6 +28,8 @@
 			</div>
 		{% endif %}
 	</form>
+</div>
+</div>
 
 {% block additional_script %}
 	<script>
