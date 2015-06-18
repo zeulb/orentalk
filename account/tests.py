@@ -1,7 +1,10 @@
 from django.test import TestCase
 from django.http import HttpRequest
-from account.views import register_page
+from account.views import register_page, login_page
 from django.contrib.auth import get_user_model
+from django.contrib.sessions.backends.db import SessionStore
+from django.core.urlresolvers import reverse
+
 User = get_user_model()
 
 class RegisterTest(TestCase):
@@ -33,3 +36,23 @@ class RegisterTest(TestCase):
 		register_page(request)
 
 		self.assertEqual(User.objects.count(), 1)
+
+	def test_can_login(self):
+		User.objects.create_user(username='budianduk', password='anduk4ever')
+
+		response = self.client.post(reverse('login'), {
+			'username': 'budianduk',
+			'password': 'anduk4ever',
+		})
+
+		self.assertRedirects(response, reverse('home'))
+
+	def test_cannot_login_with_wrong_password(self):
+		User.objects.create_user(username='budianduk', password='anduk4ever')
+
+		response = self.client.post(reverse('login'), {
+			'username': 'budianduk',
+			'password': 'anduknot4ever',
+		})
+
+		self.assertTemplateUsed(response, 'login.html')

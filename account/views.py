@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from account.forms import RegisterForm
+from account.forms import RegisterForm, LoginForm
+from django.contrib.auth import authenticate, login
 
 def register_page(request):
 	if request.POST:
@@ -9,3 +10,13 @@ def register_page(request):
 			return redirect('/')
 		return render(request, 'register.html', {'form': form})
 	return render(request, 'register.html', {'form': RegisterForm()})
+
+def login_page(request):
+	if request.POST:
+		form = LoginForm(data=request.POST)
+		user = authenticate(username=request.POST['username'], password=request.POST['password'])
+		if form.is_valid() and user:
+			login(request, user)
+			return redirect('/')
+		return render(request, 'login.html', {'form': form})
+	return render(request, 'login.html', {'form': LoginForm()})

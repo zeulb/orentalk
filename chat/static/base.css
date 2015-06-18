@@ -92,3 +92,7 @@ body {
 .table-fixed tbody td, .table-fixed thead > tr> th {
   border-bottom-width: 0;
 }
+
+.navbar-right {
+  margin-right: 0px
+}
