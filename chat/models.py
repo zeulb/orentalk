@@ -7,3 +7,9 @@ class Room(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('room', args=[self.id])
+
+
+class Message(models.Model):
+
+	text = models.TextField(default='')
+	room = models.ForeignKey(Room, default=None)

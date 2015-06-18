@@ -1,6 +1,7 @@
 from django.test import TestCase
-from chat.models import Room
+from chat.models import Room, Message
 from chat.views import room_page
+from chat.forms import NewMessageForm
 from django.http import HttpRequest
 
 class HomePageTest(TestCase):
@@ -48,3 +49,20 @@ class HomePageTest(TestCase):
 		request = HttpRequest()
 		html = room_page(request, 1)
 		self.assertContains(html, 'Budi anduk')
+
+	def test_can_add_message_to_a_room(self):
+		self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+
+		request = HttpRequest()
+		html = room_page(request, 1)
+		request.POST = {
+			'text': 'Elooo'
+		}
+
+		room_page(request, 1)
+
+		self.assertEqual(Message.objects.count(), 1)
+		self.assertEqual(Message.objects.get(id=1).text, 'Elooo')

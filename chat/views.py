@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from chat.forms import NewRoomForm
-from chat.models import Room
+from chat.forms import NewRoomForm, NewMessageForm
+from chat.models import Room, Message
 
 def home_page(request):
 	if request.POST:
@@ -14,4 +14,10 @@ def home_page(request):
 
 def room_page(request, room_id):
 	room = Room.objects.get(id=room_id)
-	return render(request, 'room.html', {'title': room.title, })
+	if request.POST:
+		form = NewMessageForm(data=request.POST)
+		if form.is_valid():
+			message = form.save(room)
+			return redirect(room)
+		return render(request, 'room.html', {'room': room, 'form': form})
+	return render(request, 'room.html', {'room': room, 'form': NewMessageForm()})

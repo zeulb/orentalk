@@ -1,8 +1,9 @@
 from django import forms
-from chat.models import Room
+from chat.models import Room, Message
 
 
 EMPTY_TITLE_ERROR = "You can't create a room with blank title"
+EMPTY_MESSAGE_ERROR = "You need to type something"
 
 class NewRoomForm(forms.models.ModelForm):
 
@@ -18,3 +19,21 @@ class NewRoomForm(forms.models.ModelForm):
 		error_messages = {
 			'title': {'required': EMPTY_TITLE_ERROR}
 		}
+
+class NewMessageForm(forms.models.ModelForm):
+
+	class Meta:
+		model = Message
+		fields = ('text',)
+		widgets = {
+			'text': forms.fields.TextInput(attrs={
+				'placeholder': 'Type something here!',
+				'class': 'form-control input-lg',
+			}),
+		}
+		error_messages = {
+			'text': {'required': EMPTY_MESSAGE_ERROR}
+		}
+
+	def save(self, room):
+		return Message.objects.create(text=self.cleaned_data['text'], room=room)
