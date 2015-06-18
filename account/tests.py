@@ -56,3 +56,18 @@ class RegisterTest(TestCase):
 		})
 
 		self.assertTemplateUsed(response, 'login.html')
+
+	def test_can_log_out(self):
+		User.objects.create_user(username='budianduk', password='anduk4ever')
+
+		self.client.post(reverse('login'), {
+			'username': 'budianduk',
+			'password': 'anduk4ever',
+		})
+
+		self.assertIn('_auth_user_id', self.client.session)
+
+		self.client.get(reverse('logout'))
+
+		self.assertNotIn('_auth_user_id', self.client.session)
+
