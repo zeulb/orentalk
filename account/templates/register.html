@@ -6,7 +6,10 @@
 {% block content %}
 
 	<form method="POST" action="{% url 'register' %}">
-		{{ form.username }}
+		<table class="table">
+		{{ form }}
+		<tr><td></td><td><input type="submit" class="btn btn-info" value="Submit Button"></td></tr>
+		</table>
 		{% csrf_token %}
 		{% if form.errors %}
 			<div class="form-group has-error">

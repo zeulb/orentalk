@@ -28,7 +28,7 @@ class NewMessageForm(forms.models.ModelForm):
 		widgets = {
 			'text': forms.fields.TextInput(attrs={
 				'placeholder': 'Type something here!',
-				'class': 'form-control input-lg',
+				'class': 'form-control',
 			}),
 		}
 		error_messages = {
