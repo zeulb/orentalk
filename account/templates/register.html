@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block page_title %} Register {% endblock %}
+
+
+{% block content %}
+
+	<form method="POST" action="{% url 'register' %}">
+		{{ form.username }}
+		{% csrf_token %}
+		{% if form.errors %}
+			<div class="form-group has-error">
+				<span class="help-block">{{ form.username.errors }}</span>
+			</div>
+		{% endif %}
+	</form>
+
+
+	
+{% endblock %}

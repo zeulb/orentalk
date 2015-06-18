@@ -20,4 +20,5 @@ urlpatterns = [
     #url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'chat.views.home_page', name='home'),
     url(r'^talk/', include('chat.urls')),
+    url(r'^account/', include('account.urls')),
 ]
