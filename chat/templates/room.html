@@ -4,6 +4,20 @@
 
 
 {% block content %}
+
+	<table class='table table-fixed'>
+		<tbody>
+		{% for message in room.message_set.all %}
+			<tr>
+				<td><p id="message">{{ message.text }}</p></td>
+			</tr>
+		{% endfor %}
+			<tr>
+				
+			</tr>
+		</tbody>
+	</table>
+
 	<form method="POST" action="{% url 'room' room.id %}">
 		{{ form.text }}
 		{% csrf_token %}
@@ -14,12 +28,13 @@
 		{% endif %}
 	</form>
 
-	<table class='table'>
-		<tbody>
-		{% for message in room.message_set.all %}
-			<td>{{ message.text }}</td>
-		{% endfor %}
-		</tbody>
-	</table>
+{% block additional_script %}
+	<script>
+  $('tbody').scrollTop(10000000);
+  $("#id_text").focus();
+</script>
+{% endblock %}
+
+
 	
 {% endblock %}

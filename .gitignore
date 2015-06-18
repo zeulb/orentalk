@@ -58,3 +58,6 @@ target/
 
 # Database
 *.sqlite3
+
+# Mac junk
+.DS_Store
