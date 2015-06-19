@@ -97,3 +97,8 @@ body {
 .navbar-right {
   margin-right: 227px
 }
+
+.errorlist, .messages {
+  list-style-type: none;
+  padding-left:0;
+}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from account.forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 def register_page(request):
 	is_guest = False
@@ -13,6 +14,7 @@ def register_page(request):
 		form = RegisterForm(data=request.POST)
 		if form.is_valid():
 			user = form.save()
+			messages.success(request, 'Successfully registered, you can now login')
 			return redirect('/')
 		return render(request, 'register.html', {'form': form})
 	return render(request, 'register.html', {'form': RegisterForm()})
@@ -31,6 +33,7 @@ def login_page(request):
 			if is_guest:
 				logout(request)
 			login(request, user)
+			messages.success(request, 'Welcome %s !' % (user.username, ))
 			return redirect('/')
 		return render(request, 'login.html', {'form': form})
 	return render(request, 'login.html', {'form': LoginForm()})

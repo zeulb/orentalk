@@ -34,12 +34,30 @@
 			<div class="row">
 				<div class="container col-md-1"></div>
 				<div class="container col-md-10">
-					{% block content %}{% endblock %}
+
+
+					
+					<div class="jumbotron jumbrotron-color">
+						<div class="row">
+							{% if messages %}
+							<ul class="messages">
+							    {% for message in messages %}
+							    <li{% if message.tags %} class="alert-{{ message.tags }} alert"{% endif %}>{{ message }}</li>
+							    {% endfor %}
+							</ul>
+							{% endif %}
+							{% block content %}{% endblock %}
+						</div>
+					</div>
 				</div>
+
 				<div class="container col-md-1"></div>
 			</div>
 		</div>
 		<script src="http://code.jquery.com/jquery.min.js"></script>
+		<script>
+		$( ".errorlist" ).children().addClass("alert alert-danger");
+		</script>
 		{% block additional_script %}{% endblock %}
 	</body>
 </html>
