@@ -14,7 +14,7 @@ class Additional(models.Model):
 	@staticmethod
 	def create_guest():
 		username = 'Guest_'+''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
-		password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+		password = settings.SECRET_KEY
 		user = User.objects.create_user(username=username, password=password)
 		additional = Additional.objects.create(user=user, is_guest=True)
 		return user

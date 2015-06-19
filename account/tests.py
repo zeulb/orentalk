@@ -57,7 +57,7 @@ class RegisterTest(TestCase):
 
 		self.assertTemplateUsed(response, 'login.html')
 
-	def test_can_log_out(self):
+	def test_can_logout(self):
 		User.objects.create_user(username='budianduk', password='anduk4ever')
 
 		self.client.post(reverse('login'), {
@@ -71,3 +71,49 @@ class RegisterTest(TestCase):
 
 		self.assertNotIn('_auth_user_id', self.client.session)
 
+	def test_guest_can_register(self):
+		self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+		
+		request = HttpRequest()
+		request.POST = {
+			'username': 'budianduk',
+			'password1': 'anduk4ever',
+			'password2': 'anduk4ever'
+		}
+
+		register_page(request)
+
+		self.assertEqual(User.objects.count(), 2)
+
+		self.assertEqual(User.objects.all()[1].username, 'budianduk')
+
+	def test_guest_can_login(self):
+		self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+		self.test_can_login()
+
+	def test_guest_can_register_and_logout(self):
+		self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+		self.test_can_logout()
+
+	def test_guest_can_logout(self):
+		self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+
+		self.assertIn('_auth_user_id', self.client.session)
+
+		self.client.get(reverse('logout'))
+
+		self.assertNotIn('_auth_user_id', self.client.session)
+
+	

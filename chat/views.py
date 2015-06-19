@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from chat.forms import NewRoomForm, NewMessageForm
 from chat.models import Room, Message
 from account.models import Additional
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login, authenticate
+from django.conf import settings
 User = get_user_model()
 
 def home_page(request):
@@ -13,6 +14,8 @@ def home_page(request):
 				_room = form.save(request.user)
 			else:
 				user = Additional.create_guest()
+				backenduser = authenticate(username=user.username, password=settings.SECRET_KEY)
+				login(request, backenduser)
 				_room = form.save(user)
 			return redirect(_room)
 		return render(request, 'home.html', {'form': form, })
