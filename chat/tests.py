@@ -4,6 +4,7 @@ from chat.views import room_page
 from chat.forms import NewMessageForm
 from django.http import HttpRequest
 from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse
 
 User = get_user_model()
 
@@ -59,13 +60,10 @@ class HomePageTest(TestCase):
 			data={'title': 'Budi anduk'}
 		)
 
-		request = HttpRequest()
-		html = room_page(request, 1)
-		request.POST = {
-			'text': 'Elooo'
-		}
-
-		room_page(request, 1)
+		self.client.post(
+			reverse('room', args=[1]),
+			data={'text': 'Elooo'}
+		)
 
 		self.assertEqual(Message.objects.count(), 1)
 		self.assertEqual(Message.objects.get(id=1).text, 'Elooo')

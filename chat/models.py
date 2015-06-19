@@ -14,5 +14,5 @@ class Message(models.Model):
 
 	text = models.TextField(default='')
 	room = models.ForeignKey(Room, default=None)
-	# owner = models.ForeignKey(settings.AUTH_USER_MODEL, default=None)
+	owner = models.ForeignKey(settings.AUTH_USER_MODEL, default=None)
 

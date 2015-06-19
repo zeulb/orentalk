@@ -38,5 +38,5 @@ class NewMessageForm(forms.models.ModelForm):
 			'text': {'required': EMPTY_MESSAGE_ERROR}
 		}
 
-	def save(self, room):
-		return Message.objects.create(text=self.cleaned_data['text'], room=room)
+	def save(self, room, owner):
+		return Message.objects.create(text=self.cleaned_data['text'], room=room, owner=owner)

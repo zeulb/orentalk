@@ -27,7 +27,13 @@ def room_page(request, room_id):
 	if request.POST:
 		form = NewMessageForm(data=request.POST)
 		if form.is_valid():
-			message = form.save(room)
+			if request.user.is_authenticated():
+				message = form.save(room, request.user)
+			else:
+				user = Additional.create_guest()
+				backenduser = authenticate(username=user.username, password=settings.SECRET_KEY)
+				login(request, backenduser)
+				message = form.save(room, user)
 			return redirect(room)
 		return render(request, 'room.html', {'room': room, 'form': form})
 	return render(request, 'room.html', {'room': room, 'form': NewMessageForm()})
