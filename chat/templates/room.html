@@ -10,7 +10,7 @@
 		<tbody>
 		{% for message in room.message_set.all %}
 			<tr>
-				<td><p id="message">{{ message.text }}</p></td>
+				<td><p id="message">{{message.owner.username}} : {{ message.text }}</p></td>
 			</tr>
 		{% endfor %}
 			<tr>
