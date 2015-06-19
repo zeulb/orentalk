@@ -25,7 +25,7 @@ class TestHomePage(FunctionalTest):
 
 		page_title = self.browser.find_element_by_id('page-title').text
 
-		self.assertEqual(page_title, 'Gajah terbang lagi')
+		self.assertIn('Gajah terbang lagi', page_title)
 
 	def test_error_message_on_creating_chat_room_with_blank_title(self):
 		self.browser.get(self.live_server_url)

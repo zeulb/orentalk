@@ -41,3 +41,28 @@ class TestChatRoom(FunctionalTest):
 
 		self.assertIn('Halo', self.browser.page_source,)
 		self.assertIn('Helo lagi', self.browser.page_source)
+
+class TestOwner(FunctionalTest):
+
+	def test_chat_room_owner_correct_when_logged_in(self):
+		self.register_user('budi', 'gajah', 'gajah')
+		self.login_user('budi', 'gajah')
+
+		self.browser.get(self.live_server_url)
+
+		new_chat_form = self.browser.find_element_by_id('id_title')
+		new_chat_form.send_keys('Budi makan gajah\n')
+
+		text = 'Budi makan gajah by budi'
+
+		self.assertIn(text, self.browser.page_source)
+
+	def test_chat_room_owner_correct_as_guest(self):
+		self.browser.get(self.live_server_url)
+
+		new_chat_form = self.browser.find_element_by_id('id_title')
+		new_chat_form.send_keys('Budi makan gajah\n')
+
+		text = 'Budi makan gajah by Guest'
+
+		self.assertIn(text, self.browser.page_source)

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block page_title %} {{room.title}} {% endblock %}
+{% block page_title %} {{ room.title }} by {{ room.owner }} {% endblock %}
 
 
 {% block content %}
@@ -32,7 +32,7 @@
 </div>
 
 {% block additional_script %}
-	<script>
+<script>
   $('tbody').scrollTop(10000000);
   $("#id_text").focus();
 </script>

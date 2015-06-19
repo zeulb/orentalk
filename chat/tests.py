@@ -3,6 +3,9 @@ from chat.models import Room, Message
 from chat.views import room_page
 from chat.forms import NewMessageForm
 from django.http import HttpRequest
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class HomePageTest(TestCase):
 
@@ -66,3 +69,30 @@ class HomePageTest(TestCase):
 
 		self.assertEqual(Message.objects.count(), 1)
 		self.assertEqual(Message.objects.get(id=1).text, 'Elooo')
+
+	def test_room_created_when_not_logged_in_will_have_guest_username(self):
+		request = self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+
+		self.assertEqual(User.objects.count(), 1)
+
+		user = User.objects.first()
+
+		self.assertTrue(user.username.startswith('Guest'))
+
+		self.assertEqual(Room.objects.first().owner, user)
+	
+	def test_room_created_when_logged_in_will_have_their_username(self):
+		user = User.objects.create_user(username='budi', password='anduk')
+		self.client.login(username='budi', password='anduk')
+		request = self.client.post(
+			'/',
+			data={'title': 'Budi anduk'}
+		)
+
+		self.assertEqual(Room.objects.first().owner, user)
+		
+
+

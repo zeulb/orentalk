@@ -20,6 +20,9 @@ class NewRoomForm(forms.models.ModelForm):
 			'title': {'required': EMPTY_TITLE_ERROR}
 		}
 
+	def save(self, owner):
+		return Room.objects.create(title=self.cleaned_data['title'], owner=owner)
+
 class NewMessageForm(forms.models.ModelForm):
 
 	class Meta:
