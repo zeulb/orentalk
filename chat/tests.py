@@ -93,6 +93,6 @@ class HomePageTest(TestCase):
 		)
 
 		self.assertEqual(Room.objects.first().owner, user)
-		
+
 
 

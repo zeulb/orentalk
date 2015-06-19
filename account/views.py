@@ -3,6 +3,12 @@ from account.forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 
 def register_page(request):
+	is_guest = False
+	if request.user.is_authenticated():
+		is_guest = hasattr(request.user, 'additional') and request.user.additional.is_guest
+		if not is_guest:
+			return redirect('/')
+
 	if request.POST:
 		form = RegisterForm(data=request.POST)
 		if form.is_valid():
@@ -12,10 +18,18 @@ def register_page(request):
 	return render(request, 'register.html', {'form': RegisterForm()})
 
 def login_page(request):
+	is_guest = False
+	if request.user.is_authenticated():
+		is_guest = hasattr(request.user, 'additional') and request.user.additional.is_guest
+		if not is_guest:
+			return redirect('/')
+
 	if request.POST:
 		form = LoginForm(data=request.POST)
 		user = authenticate(username=request.POST['username'], password=request.POST['password'])
 		if form.is_valid() and user:
+			if is_guest:
+				logout(request)
 			login(request, user)
 			return redirect('/')
 		return render(request, 'login.html', {'form': form})

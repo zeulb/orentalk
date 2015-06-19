@@ -10,14 +10,11 @@ User = get_user_model()
 class RegisterTest(TestCase):
 
 	def test_can_register(self):
-		request = HttpRequest()
-		request.POST = {
+		self.client.post(reverse('register'),data={
 			'username': 'budianduk',
 			'password1': 'anduk4ever',
 			'password2': 'anduk4ever'
-		}
-
-		register_page(request)
+		})
 
 		self.assertEqual(User.objects.count(), 1)
 
@@ -25,15 +22,18 @@ class RegisterTest(TestCase):
 
 
 	def test_cannot_register_username_that_already_exist(self):
-		request = HttpRequest()
-		request.POST = {
+		self.client.post(reverse('register'),data={
 			'username': 'budianduk',
 			'password1': 'anduk4ever',
 			'password2': 'anduk4ever'
-		}
+		})
 
-		register_page(request)
-		register_page(request)
+		self.client.post(reverse('register'),data={
+			'username': 'budianduk',
+			'password1': 'anduk4ever',
+			'password2': 'anduk4ever'
+		})
+
 
 		self.assertEqual(User.objects.count(), 1)
 
@@ -76,15 +76,15 @@ class RegisterTest(TestCase):
 			'/',
 			data={'title': 'Budi anduk'}
 		)
+
+		self.assertEqual(User.objects.count(), 1)
 		
-		request = HttpRequest()
-		request.POST = {
+		self.client.post(reverse('register'),data={
 			'username': 'budianduk',
 			'password1': 'anduk4ever',
 			'password2': 'anduk4ever'
-		}
+		})
 
-		register_page(request)
 
 		self.assertEqual(User.objects.count(), 2)
 
@@ -116,4 +116,17 @@ class RegisterTest(TestCase):
 
 		self.assertNotIn('_auth_user_id', self.client.session)
 
-	
+	def test_member_cannot_login_or_register(self):
+
+		User.objects.create_user(username='budianduk', password='anduk4ever')
+
+		self.client.post(reverse('login'), {
+			'username': 'budianduk',
+			'password': 'anduk4ever',
+		})
+
+		response = self.client.get(reverse('login'))
+		self.assertRedirects(response, reverse('home'))
+
+		response = self.client.get(reverse('register'))
+		self.assertRedirects(response, reverse('home'))
